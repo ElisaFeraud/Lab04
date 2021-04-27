@@ -60,7 +60,7 @@ public boolean equals(Object obj) {
 }
 @Override
 public String toString() {
-	return "Studente [matricola=" + matricola + ", cognome=" + cognome + ", nome=" + nome + ", cDS=" + cDS + "]";
+	return  matricola + " " + cognome + " " + nome + " " + cDS ;
 }
  
 }

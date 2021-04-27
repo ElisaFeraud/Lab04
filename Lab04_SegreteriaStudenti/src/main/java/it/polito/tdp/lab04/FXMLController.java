@@ -75,7 +75,19 @@ public class FXMLController {
         }
       List<Corso> corsiLista = new LinkedList<Corso>();
       corsiLista=modello.corsiStudente(matricola);
-      txtInfo.setText(""+corsiLista);
+      StringBuilder sb = new StringBuilder();
+  	for(Corso c : corsiLista) {
+  		txtInfo.appendText(c.toString() + "\n");
+  		//dopo il %, il "-" serve per allineare il testo a sinistra, 
+  		//il numero per definire la "larghezza" della colonna
+
+  		//N.B. lo stesso formato si può ottenere andando a modificare direttamente
+  		//il metodo toString della classe (vedi quanto fatto per la classe Studente)
+  		sb.append(String.format("%-8s ", c.getCodins()));
+  		sb.append(String.format("%-4d ", c.getNumeroCrediti()));
+  		sb.append(String.format("%-50s ", c.getNome()));
+  		sb.append(String.format("%-4d\n", c.getPeriodoDidattico()));}
+     
     }
 
     @FXML
@@ -91,7 +103,21 @@ public class FXMLController {
     		  corsoScelto = new Corso(c.getCodins(), c.getNumeroCrediti(), nomeCorso, c.getPeriodoDidattico());
       }
       List<Studente> studenti = modello.getStudentiIscrittiAlCorso(corsoScelto);
-      txtInfo.setText(""+studenti);
+      StringBuilder sb = new StringBuilder();
+    	for(Studente s : studenti) {
+    		txtInfo.appendText(s.toString() + "\n");
+    		//dopo il %, il "-" serve per allineare il testo a sinistra, 
+    		//il numero per definire la "larghezza" della colonna
+
+    		//N.B. lo stesso formato si può ottenere andando a modificare direttamente
+    		//il metodo toString della classe (vedi quanto fatto per la classe Studente)
+    		/*sb.append(String.format("%-8s ", s.getMatricola()));
+    		sb.append(String.format("%-4d ", s.getCognome()));
+    		sb.append(String.format("%-50s ", s.getNome()));
+    		sb.append(String.format("%-4d\n", s.getcDS()));*/
+    		}
+       
+      
       
     }
 
@@ -112,10 +138,21 @@ public class FXMLController {
         	  txtNome.setText("Errore");
         	  return;
           }
+          boolean esiste=false;
+          List<Studente> studenti = modello.getTuttiGliStudenti();
+          for(Studente s: studenti) {
+        	  if(s.getMatricola().equals(matricola)) {
+        		  esiste=true;
+        	  break;}
+          }
+          if(!esiste) {
+        	  txtCognome.setText("Matricola inesistente");
+              txtNome.setText("Matricola inesistente");}
+          else {
           String cognome = modello.ottieniCognome(matricola);
           String nome = modello.ottieniNome(matricola);
           txtCognome.setText(cognome);
-          txtNome.setText(nome);
+          txtNome.setText(nome);}
         
     }
 
@@ -158,7 +195,10 @@ public class FXMLController {
 
     @FXML
     void doReset(ActionEvent event) {
-
+        txtInfo.clear();
+        txtMatricola.clear();
+        txtCognome.clear();
+        txtNome.clear();
     }
 
     @FXML
